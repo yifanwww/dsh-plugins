@@ -1,0 +1,18 @@
+{
+  "name": "dsh-plugins",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Development monorepo for my DeepSeek Harness (dsh) plugins.",
+  "license": "MIT",
+  "packageManager": "pnpm@12.21.0",
+  "scripts": {
+    "new": "node scripts/new-plugin.mjs",
+    "check": "node scripts/check-plugins.mjs",
+    "test": "pnpm -r --if-present test"
+  },
+  "devDependencies": {
+    "semver": "^7.8.6",
+    "yaml": "^2.9.1"
+  }
+}

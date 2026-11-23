@@ -1,0 +1,10 @@
+# Every plugin is an independent installable package, so the workspace is flat:
+# one directory per plugin. Shared helper packages, if they ever appear, would
+# go under packages/* and be listed here too.
+packages:
+  - plugins/*
+
+# Plugins are installed into a dsh profile by absolute path (a pnpm `link:`),
+# so the profile always reads the working tree. Anything below only affects
+# how this repo installs its own dev tooling.
+nodeLinker: hoisted

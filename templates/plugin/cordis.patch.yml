@@ -1,0 +1,8 @@
+# The bundle layer this package contributes. Installing the package into a dsh
+# profile appends it to `dsh.profile.bundles` and applies this patch, which
+# inserts the plugin's Host row. The row id must stay unique across the
+# profile; the name is the package, so Node resolves it from the install.
+- insert:
+    - id: __SLUG__
+      name: '__PACKAGE_NAME__'
+      # Add `config:` when the plugin exports a Config schema (see AGENTS.md).
