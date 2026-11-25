@@ -4,7 +4,7 @@ My [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (dsh) plu
 installable package per plugin, developed in a pnpm workspace and linked live into a dsh
 profile.
 
-dsh loads plugins from *bundles*: an npm package with a `dsh.bundle.patch` YAML file that
+dsh loads plugins from _bundles_: an npm package with a `dsh.bundle.patch` YAML file that
 inserts Loader rows, optionally plus a browser half that registers a module in the Web/Desktop
 page. A profile installs each bundle separately, so every plugin here is its own package with
 its own manifest, patch, locale files, and icon.
@@ -24,8 +24,8 @@ so later edits reach the running app without reinstalling.
 
 ## Plugins
 
-| Plugin | What it does |
-|---|---|
+| Plugin                                     | What it does                                                                                                                                                                        |
+| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [`composer-focus`](plugins/composer-focus) | Focuses the chat composer from anywhere in the window with `Ctrl+I` (`Cmd+I` on macOS), including while the composer is unfocused. Rebindable in **Settings → Keyboard shortcuts**. |
 
 ## Layout
@@ -48,17 +48,17 @@ dsh-plugins.config.json  recorded dsh release + package prefix
 
 ## Scripts
 
-| Command | What it does |
-|---|---|
-| `pnpm new <slug>` | Scaffold `plugins/<slug>` from `templates/plugin`, filling in the package name, row id, module id, and locale stubs. |
-| `pnpm check` | Validate every plugin against the rules dsh applies on install/activation: manifest, patch rows, client export and module id, locale text, icon limits, `files` coverage, and JS syntax. |
-| `pnpm test` | Run `test` scripts of plugins that define them (`node --test` is a good default). |
+| Command           | What it does                                                                                                                                                                             |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm new <slug>` | Scaffold `plugins/<slug>` from `templates/plugin`, filling in the package name, row id, module id, and locale stubs.                                                                     |
+| `pnpm check`      | Validate every plugin against the rules dsh applies on install/activation: manifest, patch rows, client export and module id, locale text, icon limits, `files` coverage, and JS syntax. |
+| `pnpm test`       | Run `test` scripts of plugins that define them (`node --test` is a good default).                                                                                                        |
 
 ## Development loop
 
 - **Browser half**: the app polls each active plugin's client artifact (every 500 ms) and swaps
   in a rewritten bundle, so saving `src/client.js` updates the page without a restart. There is
-  no build step here — the source file *is* the served artifact.
+  no build step here — the source file _is_ the served artifact.
 - **Host half**: dsh replaces a linked plugin at the next profile recomposition. To get that
   automatically, enable source watching for this repo in the profile's `cordis.patch.yml`:
 
@@ -66,10 +66,11 @@ dsh-plugins.config.json  recorded dsh release + package prefix
   - id: hmr
     disabled: false
     config:
-      root: ["C:/projects/yifanwww/dsh-plugins"]
+      root: ['C:/projects/yifanwww/dsh-plugins']
   ```
 
   Without it, restart the app after Host edits.
+
 - **`package.json`**: read when a row starts, so manifest changes need a restart.
 - **`cordis.patch.yml`**: applied on install; edit it in the repo and reinstall, or override the
   row in the profile's own patch layer.

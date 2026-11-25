@@ -12,8 +12,8 @@
 window.__ModuleLoader__.load({
   id: '__PACKAGE_NAME__',
   factory(require) {
-    const React = require('react')
-    const h = React.createElement
+    const React = require('react');
+    const h = React.createElement;
 
     /**
      * A small pill under the composer. It uses inherited colors instead of
@@ -21,20 +21,24 @@ window.__ModuleLoader__.load({
      * use the `--dsw-alias-*` tokens of the surface it renders into.
      */
     function Badge() {
-      return h('span', {
-        style: {
-          display: 'inline-flex',
-          alignItems: 'center',
-          margin: '4px 0',
-          padding: '1px 8px',
-          border: '1px solid currentColor',
-          borderRadius: 999,
-          fontSize: 11,
-          lineHeight: 1.6,
-          opacity: 0.55,
-          pointerEvents: 'none',
+      return h(
+        'span',
+        {
+          style: {
+            display: 'inline-flex',
+            alignItems: 'center',
+            margin: '4px 0',
+            padding: '1px 8px',
+            border: '1px solid currentColor',
+            borderRadius: 999,
+            fontSize: 11,
+            lineHeight: 1.6,
+            opacity: 0.55,
+            pointerEvents: 'none',
+          },
         },
-      }, '__TITLE__')
+        '__TITLE__',
+      );
     }
 
     return {
@@ -43,12 +47,17 @@ window.__ModuleLoader__.load({
       apply(ctx) {
         // `slots.inject` re-registers the callback whenever the owning slot
         // declaration changes; every registration it makes is disposed with it.
-        ctx.slots.inject('conversation.composer.dock', () => ctx.slots.register({
-          name: 'conversation.composer.dock',
-          id: '__SLUG__',
-          order: 100,
-        }, Badge))
+        ctx.slots.inject('conversation.composer.dock', () =>
+          ctx.slots.register(
+            {
+              name: 'conversation.composer.dock',
+              id: '__SLUG__',
+              order: 100,
+            },
+            Badge,
+          ),
+        );
       },
-    }
+    };
   },
-})
+});

@@ -1,6 +1,6 @@
-# __PACKAGE_NAME__
+# **PACKAGE_NAME**
 
-__DESCRIPTION__
+**DESCRIPTION**
 
 ## What it does
 

@@ -5,7 +5,7 @@ Instructions for agent sessions in this repository. Read this before adding or c
 ## What this repository is
 
 A pnpm workspace where every directory under `plugins/` is one installable DeepSeek Harness
-(dsh) *bundle* package. Plugins are installed into a dsh profile by absolute path; the profile
+(dsh) _bundle_ package. Plugins are installed into a dsh profile by absolute path; the profile
 then links the checkout, so this working tree is what runs.
 
 ## Non-negotiables
@@ -22,16 +22,16 @@ then links the checkout, so this working tree is what runs.
 
 ## Conventions
 
-| Thing | Rule |
-|---|---|
-| Directory | `plugins/<slug>` — lower-case words, single hyphens |
-| Package name | `dsh-plugin-<slug>` (prefix in `dsh-plugins.config.json`) |
-| Patch row id | `<slug>`, unique across the whole repo |
-| Browser module id | exactly the package name |
-| Host entry | `src/index.js`, plain ESM, exports `apply(ctx, config)` |
-| Browser entry | `src/client.js`, classic script, calls `window.__ModuleLoader__.load` |
-| Locales | `locale/en.json` and `locale/zh.json`, each with `meta.title` and `meta.description` |
-| Icon | `icon.svg` on a 36×36 canvas, exported as `./icon` |
+| Thing             | Rule                                                                                 |
+| ----------------- | ------------------------------------------------------------------------------------ |
+| Directory         | `plugins/<slug>` — lower-case words, single hyphens                                  |
+| Package name      | `dsh-plugin-<slug>` (prefix in `dsh-plugins.config.json`)                            |
+| Patch row id      | `<slug>`, unique across the whole repo                                               |
+| Browser module id | exactly the package name                                                             |
+| Host entry        | `src/index.js`, plain ESM, exports `apply(ctx, config)`                              |
+| Browser entry     | `src/client.js`, classic script, calls `window.__ModuleLoader__.load`                |
+| Locales           | `locale/en.json` and `locale/zh.json`, each with `meta.title` and `meta.description` |
+| Icon              | `icon.svg` on a 36×36 canvas, exported as `./icon`                                   |
 
 No build step: the files in `src/` are the files dsh executes and serves. Add a bundler only if a
 plugin needs JSX, TypeScript, or npm code in the browser half; then export built files instead
@@ -47,7 +47,7 @@ pnpm check
 Then implement, keeping `pnpm check` at zero errors:
 
 1. Decide the extension point first (Host effect, tool policy, slot, Chat row, settings section).
-   Read the applicable reference before writing code — see *Learning the APIs* below.
+   Read the applicable reference before writing code — see _Learning the APIs_ below.
 2. Keep `cordis.patch.yml` naming this package's own row. Add `config:` only when the plugin
    exports a `Config` schema.
 3. `pnpm check` must pass; the only acceptable warnings are `locale/zh.json` TODOs you are about
@@ -119,7 +119,7 @@ Do not guess service methods, event names, slot names, or props.
   Only `react`/`react-dom` and modules named in `dsh.client.external` may be required.
 - A throwing component blanks its slot entry. Do not import `@deepseek-ai/*` Client packages as
   modules at runtime; copy the markup/behavior you need instead.
-- dsh packages whose *instance* must be shared (Cordis, service types) belong in both
+- dsh packages whose _instance_ must be shared (Cordis, service types) belong in both
   `peerDependencies` and `devDependencies`; stateless utilities (e.g. `@deepseek-ai/schemastery`
   for `Config`) belong in `dependencies`.
 - `files` does not filter a linked install, but it decides what a published tarball ships.

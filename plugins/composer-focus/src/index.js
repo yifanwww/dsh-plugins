@@ -8,6 +8,6 @@
  * shortcut itself — command registration and focus routing are browser-side —
  * so `apply` deliberately stays empty.
  */
-export const name = 'composer-focus'
+export const name = 'composer-focus';
 
 export function apply() {}

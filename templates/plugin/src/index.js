@@ -10,7 +10,7 @@
  * disposed when the plugin unloads, so `ctx.effect`, `ctx.on`, and service
  * registrations need no manual cleanup.
  */
-export const name = '__SLUG__'
+export const name = '__SLUG__';
 
 export function apply(ctx) {
   // Contribute Host behavior here. Typical starts:

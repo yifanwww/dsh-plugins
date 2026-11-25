@@ -20,9 +20,9 @@ they come from dsh's shipped code or documentation.
     "dependencies": {
       "dsh-plugin-smoke-test": "link:C:/projects/yifanwww/dsh-plugins/plugins/smoke-test"
     },
-    "dsh": { "profile": { "bundles": [
-      "@deepseek-ai/dsh-base", "@deepseek-ai/dsh-web-app", "...", "dsh-plugin-smoke-test"
-    ] } }
+    "dsh": {
+      "profile": { "bundles": ["@deepseek-ai/dsh-base", "@deepseek-ai/dsh-web-app", "...", "dsh-plugin-smoke-test"] }
+    }
   }
   ```
 
@@ -94,12 +94,17 @@ The artifact is a **classic script**, not an ES module
 
 ```js
 window.__ModuleLoader__.load({
-  id: '<package name>',        // must equal the package name
+  id: '<package name>', // must equal the package name
   factory(require) {
-    const React = require('react')   // baseline external
-    return { inject: ['slots'], apply(ctx) { /* register slots here */ } }
+    const React = require('react'); // baseline external
+    return {
+      inject: ['slots'],
+      apply(ctx) {
+        /* register slots here */
+      },
+    };
   },
-})
+});
 ```
 
 It is loaded with `document.createElement('script')` and no `type="module"`
@@ -131,7 +136,7 @@ and rendered by `src/client/skeleton/InputBar.tsx:598` in this build.
   - id: hmr
     disabled: false
     config:
-      root: ["C:/projects/yifanwww/dsh-plugins"]
+      root: ['C:/projects/yifanwww/dsh-plugins']
   ```
 
 - **`package.json`** — **[source]** read when a Loader entry starts or restarts

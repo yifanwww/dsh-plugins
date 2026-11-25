@@ -9,9 +9,14 @@
   "scripts": {
     "new": "node scripts/new-plugin.mjs",
     "check": "node scripts/check-plugins.mjs",
+    "format": "prettier --write \"**/*.{cjs,cts,css,html,js,json,jsx,md,mjs,mts,ts,tsx,yaml,yml}\"",
+    "prepare": "husky",
     "test": "pnpm -r --if-present test"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.2",
+    "prettier": "^3.10.1",
     "semver": "^7.8.6",
     "yaml": "^2.9.1"
   }
