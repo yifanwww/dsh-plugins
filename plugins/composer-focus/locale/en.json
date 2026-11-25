@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "Composer focus",
+    "description": "Focus the chat composer from anywhere in the window with a keyboard shortcut.",
+    "detail": "docs/DETAIL.md"
+  }
+}

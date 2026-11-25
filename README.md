@@ -22,6 +22,12 @@ Then install it into a profile by absolute directory path: **Plugins > Add plugi
 app, or `plugin_manager` `install_bundle` from an agent session. The profile links the checkout,
 so later edits reach the running app without reinstalling.
 
+## Plugins
+
+| Plugin | What it does |
+|---|---|
+| [`composer-focus`](plugins/composer-focus) | Focuses the chat composer from anywhere in the window with `Ctrl+I` (`Cmd+I` on macOS), including while the composer is unfocused. Rebindable in **Settings → Keyboard shortcuts**. |
+
 ## Layout
 
 ```
@@ -32,8 +38,9 @@ plugins/<slug>/          one package per plugin: dsh-plugin-<slug>
   src/client.js          browser half (classic script registering window.__ModuleLoader__)
   locale/en.json         title and description shown by Plugin Manager
   locale/zh.json         the same, in Chinese (the app falls back to English)
+  docs/DETAIL.md         optional detail page: one feature image, plus a localized variant
   icon.svg               row icon
-  README.md              falls back to the Plugin Manager detail page
+  README.md              package documentation; the detail fallback without docs/DETAIL.md
 templates/plugin/        the starter copied by `pnpm new`
 scripts/                 new-plugin.mjs, check-plugins.mjs
 dsh-plugins.config.json  recorded dsh release + package prefix

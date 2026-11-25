@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "输入框聚焦",
+    "description": "在窗口任意位置用快捷键聚焦聊天输入框。",
+    "detail": "docs/DETAIL.zh.md"
+  }
+}
