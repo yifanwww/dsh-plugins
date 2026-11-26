@@ -1,6 +1,6 @@
-# **PACKAGE_NAME**
+# {{PACKAGE_NAME}}
 
-**DESCRIPTION**
+{{DESCRIPTION}}
 
 ## What it does
 
@@ -18,7 +18,8 @@ The package is linked into a dsh profile, so the profile reads this working
 tree directly:
 
 ```sh
-pnpm check                                     # from the repo root
+pnpm check    # validate manifests, patches, locales, icons, syntax
+pnpm format   # rewrite with prettier; the pre-commit hook also formats staged files
 ```
 
 Then install it once per profile: **Plugins > Add plugin** and give the

@@ -16,6 +16,7 @@ pnpm install
 pnpm new my-plugin --title "My plugin"   # creates plugins/my-plugin (dsh-plugin-my-plugin)
 # ... implement plugins/my-plugin/src/index.js and src/client.js ...
 pnpm check                                # validate manifests, patches, locales, icons, syntax
+pnpm format                               # rewrite with prettier (the pre-commit hook does this too)
 ```
 
 Then install it into a profile by absolute directory path: **Plugins > Add plugin** in the dsh
@@ -44,6 +45,8 @@ plugins/<slug>/          one package per plugin: dsh-plugin-<slug>
 templates/plugin/        the starter copied by `pnpm new`
 scripts/                 new-plugin.mjs, check-plugins.mjs
 dsh-plugins.config.json  recorded dsh release + package prefix
+.prettierrc.json         formatting rules for every file (.prettierignore skips pnpm-lock.yaml)
+.husky/pre-commit        git hook: lint-staged runs prettier on staged files
 ```
 
 ## Scripts
@@ -52,7 +55,21 @@ dsh-plugins.config.json  recorded dsh release + package prefix
 | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `pnpm new <slug>` | Scaffold `plugins/<slug>` from `templates/plugin`, filling in the package name, row id, module id, and locale stubs.                                                                     |
 | `pnpm check`      | Validate every plugin against the rules dsh applies on install/activation: manifest, patch rows, client export and module id, locale text, icon limits, `files` coverage, and JS syntax. |
+| `pnpm format`     | Rewrite every supported file with Prettier (configuration in `.prettierrc.json`).                                                                                                        |
 | `pnpm test`       | Run `test` scripts of plugins that define them (`node --test` is a good default).                                                                                                        |
+
+## Formatting
+
+Prettier owns formatting: `.prettierrc.json` sets 120-column lines, single quotes, semicolons,
+trailing commas, two-space indent, and LF endings, and `.prettierignore` leaves `pnpm-lock.yaml`
+alone.
+
+- `pnpm format` rewrites the whole tree.
+- `pnpm install` runs the `prepare` script, which installs a Git pre-commit hook (husky). The hook
+  runs `lint-staged` (`.lintstagedrc.json`), which applies `prettier --write` to staged files only.
+- `pnpm check` does not verify formatting, so run `pnpm format` after changing manifests or code.
+
+To skip formatting for one commit (for example, a work-in-progress commit), set `HUSKY=0` for it.
 
 ## Development loop
 
@@ -92,6 +109,8 @@ cmd /c rmdir "$env:DSH_PROFILE_DIR\node_modules\dsh-plugin-my-plugin"
 
 - dsh 0.2.x (recorded in `dsh-plugins.config.json`; update it and `engines.dsh` when upgrading).
 - Node.js 20+ and pnpm 10+ for the repo tooling.
+- Git: `pnpm install` installs the pre-commit formatting hook. Where hooks cannot run, call
+  `pnpm format` before committing.
 - The `desktop` profile is managed by the Desktop app; the npm `dsh` CLI refuses it and is only
   useful for other profiles.
 

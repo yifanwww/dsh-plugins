@@ -91,19 +91,28 @@ if (existsSync(targetDir)) {
 }
 
 const replacements = new Map([
-  ['__PACKAGE_NAME__', packageName],
-  ['__SLUG__', slug],
-  ['__TITLE__', title ?? titleFromSlug(slug)],
-  [
-    '__DESCRIPTION__',
-    description ?? 'TODO: one sentence describing what this plugin does and where it appears in the UI.',
-  ],
+  ['PACKAGE_NAME', packageName],
+  ['SLUG', slug],
+  ['TITLE', title ?? titleFromSlug(slug)],
+  ['DESCRIPTION', description ?? 'TODO: one sentence describing what this plugin does and where it appears in the UI.'],
 ]);
+
+/**
+ * Substitute both token forms: `__NAME__` in code, YAML, and JSON, and `{{NAME}}` in
+ * Markdown, where Prettier would rewrite `__NAME__` as bold instead of leaving it alone.
+ */
+function substitute(text) {
+  let output = text;
+  for (const [token, value] of replacements) {
+    output = output.split(`__${token}__`).join(value);
+    output = output.split(`{{${token}}}`).join(value);
+  }
+  return output;
+}
 
 for (const rel of listTemplateFiles(templateDir)) {
   const source = readFileSync(join(templateDir, rel), 'utf8');
-  let output = source;
-  for (const [token, value] of replacements) output = output.split(token).join(value);
+  const output = substitute(source);
   if (rel.endsWith('.json')) {
     try {
       JSON.parse(output);

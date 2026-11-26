@@ -32,6 +32,7 @@ then links the checkout, so this working tree is what runs.
 | Browser entry     | `src/client.js`, classic script, calls `window.__ModuleLoader__.load`                |
 | Locales           | `locale/en.json` and `locale/zh.json`, each with `meta.title` and `meta.description` |
 | Icon              | `icon.svg` on a 36×36 canvas, exported as `./icon`                                   |
+| Formatting        | Prettier via `.prettierrc.json`; run `pnpm format`, never hand-align the diff        |
 
 No build step: the files in `src/` are the files dsh executes and serves. Add a bundler only if a
 plugin needs JSX, TypeScript, or npm code in the browser half; then export built files instead
@@ -51,7 +52,7 @@ Then implement, keeping `pnpm check` at zero errors:
 2. Keep `cordis.patch.yml` naming this package's own row. Add `config:` only when the plugin
    exports a `Config` schema.
 3. `pnpm check` must pass; the only acceptable warnings are `locale/zh.json` TODOs you are about
-   to translate.
+   to translate. Then run `pnpm format` so the diff is Prettier-clean.
 4. Install and verify (next section), then report exactly what you observed and what you could
    not observe.
 
@@ -88,6 +89,10 @@ cmd /c rmdir "$env:DSH_PROFILE_DIR\node_modules\dsh-plugin-<slug>"
   otherwise restart the app.
 - `package.json` edits take effect only when a row restarts. `cordis.patch.yml` is read at install
   and on recomposition.
+- Formatting: Prettier with the committed `.prettierrc.json`. `pnpm format` rewrites the tree; the
+  husky `pre-commit` hook runs `lint-staged`, which rewrites staged files only (installed by
+  `pnpm install` through `prepare`). `pnpm check` does not verify formatting, and the hook
+  rewrites rather than checks, so run `pnpm format` before reporting a change done.
 
 ## Learning the APIs
 
@@ -127,10 +132,15 @@ Do not guess service methods, event names, slot names, or props.
   bundle first.
 - The `desktop` profile is Desktop-managed: the npm `dsh` CLI refuses it, so use the app or
   `plugin_manager`, not `dsh plugin --profile desktop`.
+- Template placeholders are `__NAME__` in code, YAML, and JSON, and `{{NAME}}` in Markdown:
+  Prettier rewrites `__NAME__` there as bold, which is why `templates/plugin/README.md` uses the
+  braces form. `scripts/new-plugin.mjs` substitutes both forms; keep the matching form when
+  editing a template.
 
 ## Definition of done
 
 - `pnpm check` passes with no errors (warnings understood and reported).
+- `pnpm format` leaves no further diff, so the change is Prettier-clean.
 - The bundle installs with `application: "applied"` and its row is active in `list_bundles`.
 - Locale title/description, detail document if declared, and a real (non-placeholder) icon are in
   place; `locale/zh.json` is translated.

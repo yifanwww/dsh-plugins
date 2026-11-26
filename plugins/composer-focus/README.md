@@ -43,8 +43,9 @@ The package is linked into a dsh profile, so the profile reads this working
 tree directly:
 
 ```sh
-pnpm check                                     # from the repo root
-pnpm test                                      # browser-half unit tests
+pnpm check    # from the repo root
+pnpm format   # prettier; the pre-commit hook also formats staged files
+pnpm test     # browser-half unit tests
 ```
 
 Then install it once per profile: **Plugins > Add plugin** and give the
