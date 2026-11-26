@@ -1,4 +1,4 @@
-# Plugin development notes
+# Plugin development reference
 
 Mechanics of building and running dsh plugins, gathered while setting up this repository against
 **dsh 0.2.2-rc.5** (Desktop, profile `desktop`). Paths beginning with `$DSH_INSTALL_DIR` live
@@ -6,6 +6,26 @@ inside `app.asar`, where native tools cannot read; open them with the `read` too
 
 Facts are marked **[verified]** when observed on this machine, and **[source]** / **[docs]** when
 they come from dsh's shipped code or documentation.
+
+## How to find the real facts
+
+Do not guess service methods, event names, slot names, or props. Use the real sources, in order:
+
+1. Load the `dsh-doc` skill (`skill` tool) — the maintained entry point, routing to package
+   READMEs, templates, and authoring references.
+2. If the session has `cordis_inspect_list`/`cordis_inspect_query`, use them: they report the real
+   services, events, mounted config schemas, and live Client slots.
+3. Otherwise read the installation. On Desktop everything is inside an ASAR, where native tools
+   (`grep`, `glob`, `ls`, `node`) fail; use the `read` tool on absolute paths:
+
+   ```
+   $env:DSH_INSTALL_DIR/package.json                     # running version
+   $env:DSH_INSTALL_DIR/docs/user/develop/basic/publish.md
+   $env:DSH_INSTALL_DIR/docs/user/develop/basic/config.md
+   $env:DSH_INSTALL_DIR/../dsh-client-ui-conversation/src/client/contract/slots.ts   # slot names
+   ```
+
+   Package sources ship under each package's `src/`; the nearest `README.md` is the API reference.
 
 ---
 
@@ -165,19 +185,7 @@ This repo's plugins start with no runtime dependencies, so a linked install need
 `Config` schemas need `@deepseek-ai/schemastery` as a dependency (that is how shipped plugins do
 it, e.g. `dsh-repeat-tool-reminder/src/index.ts:10,52`).
 
-## 8. Distributing later
-
-**[docs]** `publish.md:161-186`:
-
-- npm publish, then `dsh plugin add <package>` — prebuilt files, no build permission needed.
-- `pnpm pack` + `dsh plugin add ./pkg.tgz`.
-- `github:you/repo` — fetches **sources**: the package needs a self-contained `prepare` build, and
-  the user must allow it via `allowBuilds` in their profile's `pnpm-workspace.yaml`. Only do this
-  with code you trust, pinned to a commit.
-
-The `desktop` profile cannot be managed by the npm `dsh` CLI; use the app or `plugin_manager`.
-
-## 9. What this setup verified, and what it did not
+## 8. What this setup verified, and what it did not
 
 Verified on 0.2.2-rc.5 by installing a generated template plugin and removing it again: link
 dependency and junction creation, bundle selection, row activation (`include:smoke-test`),

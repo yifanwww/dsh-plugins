@@ -4,12 +4,38 @@ My [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (dsh) plu
 installable package per plugin, developed in a pnpm workspace and linked live into a dsh
 profile.
 
-dsh loads plugins from _bundles_: an npm package with a `dsh.bundle.patch` YAML file that
+## Using the plugins
+
+Install a plugin from this repository by pointing `dsh plugin add` at the plugin's folder inside
+the repo:
+
+```sh
+dsh plugin add "github:yifanwww/dsh-plugins#path:plugins/<slug>"
+```
+
+Add `--profile <name>` to target a specific profile; on the Desktop app, use **Plugins → Add
+plugin** instead, since the `dsh` CLI can't manage the Desktop-managed `desktop` profile. Remove a
+plugin with `dsh plugin remove dsh-plugin-<slug>`, or from **Plugins**.
+
+## Plugins
+
+### [`composer-focus`](plugins/composer-focus)
+
+Focus the chat composer from anywhere in the window, even while it's unfocused, so you can jump
+back to typing without clicking first.
+
+- **Install:** `dsh plugin add "github:yifanwww/dsh-plugins#path:plugins/composer-focus"`
+- **Use it:** press `Ctrl+I` (`Cmd+I` on macOS).
+- **Change the shortcut:** **Settings → Keyboard shortcuts** → **Focus message input**.
+- **Details:** [`plugins/composer-focus/README.md`](plugins/composer-focus/README.md) — on the
+  Web runtime the shortcut ships unbound, so record one there first.
+
+## Developing
+
+dsh loads plugins from _bundles_: an npm package whose `dsh.bundle.patch` names a YAML file that
 inserts Loader rows, optionally plus a browser half that registers a module in the Web/Desktop
 page. A profile installs each bundle separately, so every plugin here is its own package with
 its own manifest, patch, locale files, and icon.
-
-## Quick start
 
 ```sh
 pnpm install
@@ -20,14 +46,8 @@ pnpm format                               # rewrite with prettier (the pre-commi
 ```
 
 Then install it into a profile by absolute directory path: **Plugins > Add plugin** in the dsh
-app, or `plugin_manager` `install_bundle` from an agent session. The profile links the checkout,
-so later edits reach the running app without reinstalling.
-
-## Plugins
-
-| Plugin                                     | What it does                                                                                                                                                                        |
-| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`composer-focus`](plugins/composer-focus) | Focuses the chat composer from anywhere in the window with `Ctrl+I` (`Cmd+I` on macOS), including while the composer is unfocused. Rebindable in **Settings → Keyboard shortcuts**. |
+app, or `plugin_manager` `install_bundle`. The profile links the checkout, so later edits reach
+the running app without reinstalling.
 
 ## Layout
 
@@ -58,19 +78,6 @@ dsh-plugins.config.json  recorded dsh release + package prefix
 | `pnpm format`     | Rewrite every supported file with Prettier (configuration in `.prettierrc.json`).                                                                                                        |
 | `pnpm test`       | Run `test` scripts of plugins that define them (`node --test` is a good default).                                                                                                        |
 
-## Formatting
-
-Prettier owns formatting: `.prettierrc.json` sets 120-column lines, single quotes, semicolons,
-trailing commas, two-space indent, and LF endings, and `.prettierignore` leaves `pnpm-lock.yaml`
-alone.
-
-- `pnpm format` rewrites the whole tree.
-- `pnpm install` runs the `prepare` script, which installs a Git pre-commit hook (husky). The hook
-  runs `lint-staged` (`.lintstagedrc.json`), which applies `prettier --write` to staged files only.
-- `pnpm check` does not verify formatting, so run `pnpm format` after changing manifests or code.
-
-To skip formatting for one commit (for example, a work-in-progress commit), set `HUSKY=0` for it.
-
 ## Development loop
 
 - **Browser half**: the app polls each active plugin's client artifact (every 500 ms) and swaps
@@ -93,7 +100,7 @@ To skip formatting for one commit (for example, a work-in-progress commit), set 
   row in the profile's own patch layer.
 
 Details, including exact install/remove behavior and the residue removal leaves behind, are in
-[`docs/plugin-development-notes.md`](docs/plugin-development-notes.md).
+[`docs/references/plugin-development-notes.md`](docs/references/plugin-development-notes.md).
 
 ## Removing a plugin
 
@@ -107,20 +114,10 @@ cmd /c rmdir "$env:DSH_PROFILE_DIR\node_modules\dsh-plugin-my-plugin"
 
 ## Requirements
 
-- dsh 0.2.x (recorded in `dsh-plugins.config.json`; update it and `engines.dsh` when upgrading).
-- Node.js 20+ and pnpm 10+ for the repo tooling.
+- dsh 0.2.2-rc.5 (the release recorded in `dsh-plugins.config.json`; bump it and every plugin's
+  `engines.dsh` when upgrading).
+- Node.js 20+ and pnpm 12 (pnpm is pinned by `packageManager` in `package.json`).
 - Git: `pnpm install` installs the pre-commit formatting hook. Where hooks cannot run, call
   `pnpm format` before committing.
 - The `desktop` profile is managed by the Desktop app; the npm `dsh` CLI refuses it and is only
   useful for other profiles.
-
-## Publishing
-
-Nothing here is published. To distribute a plugin later, remove `"private": true`, check
-`pnpm --filter dsh-plugin-<slug> pack` file lists, and choose a channel:
-
-- npm: ship the built/prepared files, then `dsh plugin add dsh-plugin-<slug>`.
-- tarball: `pnpm pack` and `dsh plugin add ./dsh-plugin-<slug>-<version>.tgz`.
-- Git: `dsh plugin add github:you/repo` — this fetches sources, so the package needs a
-  self-contained `prepare` build script **and** the user must allowlist it with
-  `allowBuilds` in their profile's `pnpm-workspace.yaml`.

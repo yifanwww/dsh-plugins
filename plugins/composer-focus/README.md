@@ -2,6 +2,14 @@
 
 Focus the chat composer from anywhere in the window with a keyboard shortcut.
 
+## Install
+
+```sh
+dsh plugin add "github:yifanwww/dsh-plugins#path:plugins/composer-focus"
+```
+
+Remove it with `dsh plugin remove dsh-plugin-composer-focus`, or from the app's **Plugins** page.
+
 ## What it does
 
 Registers one application command, **Focus message input**, in the client
@@ -55,4 +63,4 @@ absolute path of this directory, or let an agent call `plugin_manager`
 Edits to `src/client.js` reach the running page through the client HMR
 transport, so no restart is needed. The Host row exists only to publish that
 browser half and holds no runtime logic of its own — see
-`docs/plugin-development-notes.md` in the repo for the development loop.
+`docs/references/plugin-development-notes.md` in the repo for the development loop.

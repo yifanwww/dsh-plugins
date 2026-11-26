@@ -2,6 +2,14 @@
 
 {{DESCRIPTION}}
 
+## Install
+
+```sh
+dsh plugin add "github:yifanwww/dsh-plugins#path:plugins/{{SLUG}}"
+```
+
+Remove it with `dsh plugin remove {{PACKAGE_NAME}}`, or from the app's **Plugins** page.
+
 ## What it does
 
 <!-- The capability, in one or two sentences. Name the surface and the labels a
@@ -28,7 +36,7 @@ absolute path of this directory, or let an agent call
 
 Browser changes are picked up by the running page. Host changes need the
 plugin to restart: restart the app, or configure the profile's `hmr` row (see
-the repo's `docs/plugin-development-notes.md`).
+the repo's `docs/references/plugin-development-notes.md`).
 
 ## Before you ship
 
