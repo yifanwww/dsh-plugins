@@ -2,7 +2,8 @@
 
 Mechanics of building and running dsh plugins, gathered while setting up this repository against
 **dsh 0.2.2-rc.5** (Desktop, profile `desktop`). Paths beginning with `$DSH_INSTALL_DIR` live
-inside `app.asar`, where native tools cannot read; open them with the `read` tool.
+inside `app.asar`, where native tools cannot read; open them with the `read` tool. In examples,
+`<repo>` is this checkout's absolute path.
 
 Facts are marked **[verified]** when observed on this machine, and **[source]** / **[docs]** when
 they come from dsh's shipped code or documentation.
@@ -38,7 +39,7 @@ Do not guess service methods, event names, slot names, or props. Use the real so
   ```json
   {
     "dependencies": {
-      "dsh-plugin-smoke-test": "link:C:/projects/yifanwww/dsh-plugins/plugins/smoke-test"
+      "dsh-plugin-smoke-test": "link:<repo>/plugins/smoke-test"
     },
     "dsh": {
       "profile": { "bundles": ["@deepseek-ai/dsh-base", "@deepseek-ai/dsh-web-app", "...", "dsh-plugin-smoke-test"] }
@@ -156,7 +157,7 @@ and rendered by `src/client/skeleton/InputBar.tsx:598` in this build.
   - id: hmr
     disabled: false
     config:
-      root: ['C:/projects/yifanwww/dsh-plugins']
+      root: ['<repo>']
   ```
 
 - **`package.json`** — **[source]** read when a Loader entry starts or restarts

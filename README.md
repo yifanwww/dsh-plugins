@@ -84,13 +84,14 @@ dsh-plugins.config.json  recorded dsh release + package prefix
   in a rewritten bundle, so saving `src/client.js` updates the page without a restart. There is
   no build step here — the source file _is_ the served artifact.
 - **Host half**: dsh replaces a linked plugin at the next profile recomposition. To get that
-  automatically, enable source watching for this repo in the profile's `cordis.patch.yml`:
+  automatically, enable source watching for this repo in the profile's `cordis.patch.yml`,
+  setting `root` to this checkout's absolute path (`<repo>` below):
 
   ```yaml
   - id: hmr
     disabled: false
     config:
-      root: ['C:/projects/yifanwww/dsh-plugins']
+      root: ['<repo>']
   ```
 
   Without it, restart the app after Host edits.
